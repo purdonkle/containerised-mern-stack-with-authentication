@@ -1,18 +1,15 @@
 // server.js
-const express = require("express");
-const path = require("path");
+import express from "express";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import "./src/database.js";
 
 const app = express();
-const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8080;
+const CLIENT_BUILD_PATH = join(dirname(fileURLToPath(import.meta.url)), "../client/build");
 
-// DB Configuration
-require("./src/database");
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-const CLIENT_BUILD_PATH = path.join(__dirname, "../client/build");
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // If the build is in production we serve the static files using express
 if (process.env.NODE_ENV === "production") {
@@ -21,7 +18,7 @@ if (process.env.NODE_ENV === "production") {
 
   // Serve React Client
   app.get("/", function (req, res) {
-    res.sendFile(path.join(CLIENT_BUILD_PATH, "index.html"));
+    res.sendFile(join(CLIENT_BUILD_PATH, "index.html"));
   });
 }
 
