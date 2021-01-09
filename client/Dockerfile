@@ -11,9 +11,9 @@ COPY package*.json ./
 RUN npm ci
 
 # Copy local files
-COPY  . .
+COPY  ./ ./
 
 #Expose ports
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

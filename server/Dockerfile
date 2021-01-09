@@ -8,12 +8,14 @@ WORKDIR /usr/src/app
 
 # Copy and install dependency list with a clean slate
 COPY package*.json ./
+
+# Install with clean slate. package-lock dep must match package dep
 RUN npm ci
 
 # Copy local files
-COPY  . .
+COPY  ./ ./
 
 #Expose ports
 EXPOSE 5000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]

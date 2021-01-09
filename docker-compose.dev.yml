@@ -7,12 +7,11 @@ services:
       dockerfile: Dockerfile
     image: mern-server
     container_name: nodejs-express-server
-    command: /usr/src/app/node_modules/.bin/nodemon server.js
     volumes: 
-      - ./server/:/usr/app/src
-      - /usr/src/app/node_mmodules
+      - ./server/:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
-      "8080:8080"
+      - "8080:8080"
     depends_on: 
       - mongo
     env_file: ./server/.env
@@ -34,7 +33,6 @@ services:
       dockerfile: Dockerfile
     image: mern-client
     container_name: react-client
-    command: npm start
     volumes: 
       - ./client/:/usr/app
       - /usr/app/node_modules
@@ -50,7 +48,7 @@ networks:
     driver: bridge
 
 volumes: 
-  data_volume:
+  data-volume:
   node_modules:
   web-root:
     driver: local

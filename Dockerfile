@@ -1,3 +1,4 @@
+# This is the first build stage as a dependency for the next build stage
 # build React
 FROM node:14.15.3-alpine3.12 as client
 
@@ -9,12 +10,13 @@ COPY ./client/package*.json ./
 RUN npm install
 
 # Copy local files
-COPY client/ ./
+COPY ./client/ ./
 RUN ls
 
 # Build React project
 RUN npm run build
 
+# Next build stage
 # Build Nodejs
 FROM node:14.15.3-alpine3.12
 
@@ -28,11 +30,11 @@ COPY --from=client /usr/app/client/build/ ./client/build/
 WORKDIR /usr/src/app/server/
 
 # Copy and install dependency list
-COPY server/package*.json ./
-RUN npm install -qy
+COPY ./server/package*.json ./
+RUN npm install
 
 # Copy local server files
-COPY server/ ./
+COPY ./server/ ./
 
 ENV PORT 8080
 
