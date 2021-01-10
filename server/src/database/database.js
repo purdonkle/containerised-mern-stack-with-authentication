@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
 
 // mongoose options
 const options = {
@@ -23,6 +21,8 @@ const {
 const dbConnectionURL = {
     'LOCALURL': `mongodb://${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}`
 };
+
+console.log(dbConnectionURL);
 
 // connect to db
 mongoose.connect(dbConnectionURL.LOCALURL, options);
