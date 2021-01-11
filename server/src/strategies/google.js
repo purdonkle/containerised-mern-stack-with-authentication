@@ -3,13 +3,19 @@ import { Strategy } from "passport-google-oauth20";
 import User from "../database/models/User.js";
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  console.log("serialize user!");
+  done(null, user.email);
 });
 
-passport.deserializeUser((id, done) => {
-    User.findOne({ id }, (err, user) => {
-        done(err, user);
-    });
+passport.deserializeUser(async (email, done) => {
+  console.log("deserialize user");
+  try {
+    const userDB = await User.findOne({ email });
+    return userDB ? done(null, userDB) : done(null, null);
+  } catch (err) {
+    console.log(err);
+    return done(err, null);
+  }
 });
 
 passport.use(
@@ -29,12 +35,8 @@ passport.use(
         const userDB = await User.findOne({ email });
         if (!userDB) {
           const newUser = await User.create({ email, name });
-          console.log("creating user!");
-          console.log(newUser);
           return done(null, newUser);
         }
-        console.log("user found!");
-        console.log(userDB);
         return done(null, userDB);
       } catch (error) {
         return done(err, null);
