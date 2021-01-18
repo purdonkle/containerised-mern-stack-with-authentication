@@ -1,5 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
+import "dotenv/config.js";
 
 const router = Router();
 
@@ -12,8 +13,22 @@ router.get("/status", (req, res) => {
 router.get("/google", passport.authenticate("google"));
 
 // /api/auth/google/redirect
-router.get("/google/redirect", passport.authenticate("google"), (req, res) => {
-   res.redirect("http://localhost:3000/home");
-});
+if (process.env.NODE_ENV === "production") {
+  router.get(
+    "/google/redirect",
+    passport.authenticate("google"),
+    (req, res) => {
+      res.redirect("http://localhost:8080/home");
+    }
+  );
+} else {
+  router.get(
+    "/google/redirect",
+    passport.authenticate("google"),
+    (req, res) => {
+      res.redirect("http://localhost:3000/home");
+    }
+  );
+}
 
 export { router as default };

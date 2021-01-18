@@ -1,70 +1,44 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**_This is an experimental project and should not be used for actual production purposes._**
+A Dockerised implementation of the MERN stack with google oauth 2.0 and session storage using cookies(User stays logged on for 24 hours). 
 
-## Available Scripts
+### **Configure environemnt file**
+1. rename env file
+    `cp ./server/.env.example ./server/.env`
+1. Configure your env file by generating the neccessary keys for the google oauth 2.0 by following this [guide](https://developers.google.com/identity/protocols/oauth2) and set the redirect url to `/api/auth/google/redirect`
 
-In the project directory, you can run:
+### **development environemt**
+_Hot loading is enabled for both the front end and the back end. Any changes to your react files or nodejs fills will instantly be applied without manually restarting the server. Easy developer experience!!!_
+* Nodejs backend accessible at https://localhost:8080
+* React frontend accessible https://localhost:3000
+1. Create development docker-compose config file from the template
+    `cp docker-compose.dev.yml docker-compose.yml`
+1. Build and run the docker containers in detatched state
+    `docker-compose up -d --build --remove-orphans`
+1. Stop the docker containers
+    `docker-compose down`
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### **Production environment**
+_No hot loading is avaliable, any changes to the project files require a server restart. The react files are built and statically served using nodejs_
+* project accessible at https://localhost:8080
+1. Create production docker-compose config file from the template
+    `cp docker-compose.dev.yml docker-compose.yml`
+1. Build and run the docker containers in detached state
+    `docker-compose up -d --build --remove-orphans`
+1. Stop the docker containers
+    `docker-compose down`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+### **Routes**
+**front end localhost:3000**
+   * `/login` - A login page with a login button to redirect to google oauth (/api/auth/google)
+   * `/home` - The home display which you are redirected to after google oauth
+**backend localhost:8080**
+   * `/api/auth/google` - api call to google oauth
+   * `/api/auth/google/redirect` - api call for google oauth redirect
+   * `/api/auth/status` - api call to determine which user is logged in
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**TO-DO**
+1. Add logout feature
+2. Ensure persistent data is working
